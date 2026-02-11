@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+
+<!-- Dynamic Page Title for 404 Error -->
+{% block title %}404 - Page Not Found{% endblock %}
+
+{% block content %}
+<!-- Main content for the 404 error page -->
+<div class="container text-center">
+    <!-- Display large 404 error code in red -->
+    <h1 class="display-4 text-danger">404</h1>
+
+    <!-- Message explaining the error to the user -->
+    <p class="lead">Oops! The page you are looking for does not exist.</p>
+
+    <!-- Button to redirect user back to the Home page -->
+    <a href="{{ url_for('home') }}" class="btn btn-primary">Go to Home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Sign Up - Keyword Search Engine{% endblock %}
+
+{% block content %}
+<style>
+/* General page styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+}
+
+/* Container for the sign-up form */
+.signup-container {
+    max-width: 350px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Heading for the form */
+.signup-container h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #2c3e50;
+}
+
+/* Group wrapper for label and input */
+.input-group {
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+/* Label styling */
+.input-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Input field styling */
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Button styling */
+.signup-btn {
+    background: #010d52;
+    border: none;
+    padding: 10px 15px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+/* Hover effect for button */
+.signup-btn:hover {
+    background: #2980b9;
+}
+
+/* Link to login page */
+.login-link {
+    margin-top: 10px;
+}
+
+.login-link a {
+    color: #e74c3c;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Flash message container */
+.flash-message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* Styles for success messages */
+.flash-message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Styles for error messages */
+.flash-message.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Wrapper for password field with toggle */
+.password-wrapper {
+    position: relative;
+}
+
+/* Toggle link positioning */
+.password-wrapper span {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    font-size: 14px;
+}
+</style>
+
+<div class="signup-container">
+    <h2>Create an Account</h2>
+
+    {# Display flash messages with categories (success, danger) #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form id="signup-form" action="{{ url_for('signup') }}" method="POST">
+        <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" required>
+                <span onclick="togglePassword()">Show</span>
+            </div>
+            <small style="font-size: 12px; color: #555;">Minimum 8 characters, including 1 letter, 1 number, and 1 special character.</small>
+        </div>
+
+        <button type="submit" class="signup-btn">Sign Up</button>
+    </form>
+
+    <p class="login-link">
+        Already have an account? <a href="{{ url_for('login') }}">Login</a>
+    </p>
+</div>
+
+<script>
+// Toggle password visibility in the password input field
+function togglePassword() {
+    const input = document.getElementById("password");
+    const toggle = event.target;
+    if (input.type === "password") {
+        input.type = "text";
+        toggle.textContent = "Hide";
+    } else {
+        input.type = "password";
+        toggle.textContent = "Show";
+    }
+}
+</script>
+{% endblock %}

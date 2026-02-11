@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Page Setup -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Dynamic Page Title -->
+    <title>{% block title %}Keyword Based Search Engine{% endblock %}</title>
+
+    <!-- Additional Page-Specific Head Content -->
+    {% block head %}{% endblock %}
+
+    <!-- Embedded Styles for Layout, Navbar, and Responsive Design -->
+    <style>
+        /* Reset and Base Styling */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            text-align: center;
+        }
+
+        /* Container to manage vertical layout */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Main content area with padding and width control */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* -------------------- Navbar Styling -------------------- */
+        nav {
+            background-color: #021d3a;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Links inside navbar */
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            transition: background 0.3s ease;
+            border-radius: 5px;
+        }
+
+        /* Hover effect for navbar links */
+        nav a:hover {
+            background-color: #0056b3;
+        }
+
+        .navbar-left, .navbar-right {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Styling for logged-in user info display */
+        .user-info {
+            color: white;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            margin-left: 20px;
+        }
+
+        /* Responsive Navbar for Mobile Devices */
+        @media screen and (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-left, .navbar-right {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 10px;
+            }
+
+            nav a, .user-info {
+                margin-left: 0;
+                margin-bottom: 10px;
+            }
+        }
+
+        /* -------------------- Flash Message Styling -------------------- */
+        .flash-message {
+            padding: 10px;
+            margin: 10px auto;
+            width: 60%;
+            border-radius: 4px;
+            font-weight: bold;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        /* Flash message types */
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .flash-message.danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* -------------------- Footer Styling -------------------- */
+        footer {
+            background-color: #031e38;
+            color: white;
+            text-align: center;
+            padding: 15px 10px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation Bar -->
+        <nav>
+            <!-- Left section shows user info when logged in -->
+            <div class="navbar-left">
+                {% if 'user_id' in session %}
+                    <span class="user-info">{{ session['username'] }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Right section contains navigation links -->
+            <div class="navbar-right">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('about') }}">About</a>
+                {% if 'user_id' in session %}
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('signup') }}">Sign Up</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <!-- Main page content injected from child templates -->
+        <div class="main-content">
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- Footer Area -->
+        <footer>
+            <p>&copy; 2025 Keyword Based Search Engine | All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <!-- External JavaScript File -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

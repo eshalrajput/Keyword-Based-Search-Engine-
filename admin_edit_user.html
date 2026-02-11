@@ -1,0 +1,156 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Edit User - Admin{% endblock %}
+
+{% block head %}
+<!-- Styles for the Edit User form -->
+<style>
+    .edit-user-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: left;
+    }
+
+    /* Title Styling */
+    .edit-user-container h2 {
+        color: #021d3a;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    /* Form Group Styling */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 6px;
+        color: #333;
+    }
+
+    /* Input Field Styling */
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+
+    /* Text Below the Password Field */
+    .form-text {
+        font-size: 0.85rem;
+        color: #666;
+        margin-top: 4px;
+    }
+
+    /* Checkbox Styling */
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .form-check label {
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Button Group Styling */
+    .btn-group {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    /* Primary Button Styling */
+    .btn-primary,
+    .btn-secondary {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Button Hover Effects */
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #495057;
+    }
+
+    /* Responsive Design for Smaller Screens */
+    @media (max-width: 600px) {
+        .btn-group {
+            flex-direction: column;
+        }
+
+        .btn-group button {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Main Content: Edit User Form -->
+<div class="edit-user-container">
+    <h2>Edit User</h2>
+    <form method="POST" action="{{ url_for('admin_edit_user', user_id=user.id) }}">
+        <!-- Username Input -->
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ user.username }}" required>
+        </div>
+
+        <!-- Email Input -->
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" required>
+        </div>
+
+        <!-- New Password Input (Optional) -->
+        <div class="form-group">
+            <label for="password">New Password:</label>
+            <input type="password" id="password" name="password" placeholder="Leave blank to keep current password">
+            <div class="form-text">Leave this field blank if you don't want to change the password.</div>
+        </div>
+
+        <!-- Is Admin Checkbox -->
+        <div class="form-check">
+            <input type="checkbox" id="is_admin" name="is_admin" {% if user.is_admin %}checked{% endif %}>
+            <label for="is_admin">Is Admin</label>
+        </div>
+
+        <!-- Button Group (Update User / Cancel) -->
+        <div class="btn-group">
+            <button type="submit" class="btn-primary">Update User</button>
+            <a href="{{ url_for('home') }}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

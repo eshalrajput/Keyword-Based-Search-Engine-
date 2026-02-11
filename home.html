@@ -1,0 +1,621 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Home - Keyword Search Engine{% endblock %}
+
+{% block content %}
+<style>
+    /* General body styling */
+    body {
+        background-color: #ffffff !important;
+    }
+
+    /* Container for the home page content */
+    .home-container {
+        text-align: center;
+        padding-top: 40px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Heading styling */
+    .home-container h1 {
+        font-size: 36px;
+        color: #022041;
+        margin-bottom: 15px;
+    }
+
+    /* Description paragraph styling */
+    .home-container p {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 40px;
+    }
+
+    /* Search form styling */
+    .search-form {
+        margin-bottom: 30px;
+    }
+
+    /* Search input field styling */
+    .search-form input[type="text"] {
+        width: 650px;
+        height: 40px;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #000;
+        margin-right: 10px;
+        transition: 0.3s ease;
+    }
+
+    /* Search input hover effect */
+    .search-form input[type="text"]:hover {
+        border-color: #007BFF;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Search button styling */
+    .search-form button {
+        background-color: #021a4d;
+        color: white;
+        height: 50px;
+        padding: 0 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #000;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Search button hover effect */
+    .search-form button:hover {
+        background-color: #0056b3;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    /* Upload button styling */
+    .upload-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        background-color: #0d0668;
+        color: white !important;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        text-decoration: none !important;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Upload button hover effect */
+    .upload-btn:hover {
+        background-color: #0056b3;
+        cursor: pointer;
+    }
+
+    .upload-btn span {
+        font-size: 18px;
+    }
+
+    /* Admin panel styling */
+    .admin-panel {
+        margin-top: 30px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        text-align: left;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    .admin-panel h2 {
+        color: #022041;
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .admin-panel h3 {
+        color: #0c2a64;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+
+    /* User management table styling */
+    .admin-panel table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .admin-panel th, .admin-panel td {
+        padding: 8px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .admin-panel th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    /* Badge for admin users */
+    .badge-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 0.25em 0.4em;
+        border-radius: 0.25rem;
+        font-size: 0.8em;
+    }
+
+    /* Button styling */
+    .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    /* Success button styling */
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    /* Info button styling */
+    .btn-info {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    /* Danger button styling */
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    /* Warning button styling */
+    .btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    /* Muted text for less important information */
+    .text-muted {
+        color: #6c757d;
+        font-size: 0.9em;
+    }
+
+    /* Document management section styling */
+    .document-management {
+        margin-top: 40px;
+        padding: 30px;
+        background: linear-gradient(to right, #f9f9f9, #eef2f7);
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Document management header */
+    .document-management h3 {
+        font-size: 22px;
+        color: #0c2a64;
+        margin-bottom: 20px;
+        border-left: 5px solid #0c2a64;
+        padding-left: 10px;
+    }
+
+    /* Actions for document management */
+    .document-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    /* Primary button for document actions */
+    .document-actions a.btn-primary {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+    /* Hover effect for primary buttons */
+    .document-actions a.btn-primary:hover {
+        background-color: #084298;
+    }
+
+    /* Warning button styling for document clearing */
+    .document-actions button.btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    /* Hover effect for warning buttons */
+    .document-actions button.btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    /* Note under document actions */
+    .document-note {
+        margin-top: 10px;
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .document-viewer {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Document title in viewer */
+    .document-viewer h2 {
+        font-size: 28px;
+        color: #022041;
+        text-align: center;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Close button for document viewer */
+    .close-viewer {
+        font-size: 24px;
+        color: #666;
+        text-decoration: none;
+    }
+
+    /* Document content area */
+    .document-content {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 8px;
+        max-height: 500px;
+        overflow-y: auto;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    /* Preformatted text in document */
+    .document-content pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    /* Search results styling */
+    .search-results {
+        max-width: 800px;
+        margin: 30px auto;
+        text-align: left;
+    }
+
+    .result-item {
+        background: white;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        border-left: 4px solid #021a4d;
+    }
+
+    .result-title {
+        font-weight: bold;
+        color: #021a4d;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .snippet {
+        color: #555;
+        margin: 5px 0;
+        padding: 8px;
+        background: #f8f9fa;
+        border-radius: 4px;
+    }
+
+    .match-count {
+        color: #0d0668;
+        font-weight: bold;
+    }
+
+    /* Highlight for search terms */
+    mark {
+        background-color: #ffeb3b;
+        padding: 0 2px;
+    }
+
+    .result-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .btn-view {
+        background-color: #4a6baf;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .btn-view:hover {
+        background-color: #3a5a9f;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .btn-download-sm {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .btn-download-sm:hover {
+        background-color: #3e8e41;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .match-count {
+        color: #6c757d;
+        font-size: 0.9em;
+    }
+    
+    .btn-icon {
+        font-size: 16px;
+    }
+
+    /* Document table styling */
+    .document-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    .document-table th, .document-table td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+    
+    .document-table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        color: #022041;
+    }
+    
+    .document-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    
+    .document-table tr:hover {
+        background-color: #f5f5f5;
+    }
+    
+    .document-actions-cell {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .file-size {
+        color: #6c757d;
+        font-size: 0.9em;
+    }
+    
+    .no-documents {
+        text-align: center;
+        padding: 20px;
+        color: #6c757d;
+        font-style: italic;
+    }
+</style>
+
+<div class="home-container">
+    <h1>Keyword Based Search Engine For Text Document</h1>
+    <p>Search documents quickly and efficiently.</p>
+
+    <!-- Search form -->
+    <form class="search-form" action="{{ url_for('home') }}" method="GET">
+        <input type="text" name="q" value="{{ query if query else '' }}" placeholder="Search documents by keyword..." required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Upload button for regular users -->
+    {% if session.get('user_id') and not session.get('is_admin') %}
+        <a href="{{ url_for('upload_document') }}" class="upload-btn">
+            <span>📤</span> Upload Document
+        </a>
+    {% endif %}
+
+    <!-- Search results section -->
+    {% if query %}
+    <div class="search-results">
+        <h3>Search Results for "{{ query }}"</h3>
+        
+        {% if results %}
+            {% for result in results %}
+            <div class="result-item">
+                <div class="result-header">
+                    <span class="result-title">{{ result.filename }}</span>
+                    <span class="match-count">{{ result.count }} matches</span>
+                </div>
+                
+                {% for snippet in result.snippets %}
+                    <div class="snippet">{{ snippet|safe }}</div>
+                {% endfor %}
+                
+                <div class="result-actions">
+                    <a href="{{ url_for('view_document', filename=result.filename, q=query) }}" 
+                       target="_blank" class="btn-view">
+                       <span class="btn-icon">👁️</span> View Full Document
+                    </a>
+                    <a href="{{ url_for('download_file', filename=result.filename) }}" 
+                       class="btn-download-sm">
+                       <span class="btn-icon">⬇️</span> Download
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="result-item">
+                <p>No results found for "{{ query }}"</p>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Admin panel section -->
+    {% if session.get('is_admin') %}
+    <div class="admin-panel">
+        <h2>Admin Panel</h2>
+        <p><a href="{{ url_for('admin_add_user') }}" class="btn btn-success">Add New User</a></p>
+
+        <!-- User management section -->
+        <h3>👤 User Management</h3>
+        {% if users %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Admin</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }} {% if user.is_admin %}<span class="badge-primary">Admin</span>{% endif %}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+                    <td>
+                        {% if not user.is_admin or session['user_id'] == user.id %}
+                            <a href="{{ url_for('admin_edit_user', user_id=user.id) }}" class="btn btn-info btn-sm">Edit</a>
+                        {% else %}
+                            <span class="text-muted">Cannot manage admin</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No users found in the database.</p>
+        {% endif %}
+
+        <!-- Document management section -->
+        <div class="document-management">
+            <h3>📄 Document Management</h3>
+            <div class="document-actions">
+                <a href="{{ url_for('upload_document') }}" class="btn btn-primary">
+                    <span>⬆️</span> Upload Document
+                </a>
+                <form action="{{ url_for('admin_clear_documents') }}" method="POST" onsubmit="return confirm('Are you sure you want to clear ALL documents and the index?')">
+                    <button type="submit" class="btn btn-warning">
+                        <span>🗑️</span> Clear All Documents 
+                    </button>
+                </form>
+            </div>
+            <div class="document-note">
+                ⚠️ This action is <strong>irreversible</strong> and will delete all uploaded documents and reset the search index.
+            </div>
+            
+            <!-- Document listing section -->
+            <h3 style="margin-top: 30px;">Uploaded Documents</h3>
+            {% if documents %}
+            <table class="document-table">
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Size</th>
+                        <th>Upload Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documents %}
+                    <tr>
+                        <td>{{ doc.filename }}</td>
+                        <td class="file-size">{{ doc.size }}</td>
+                        <td>{{ doc.upload_date }}</td>
+                        <td class="document-actions-cell">
+                            <a href="{{ url_for('view_document', filename=doc.filename) }}" 
+                               target="_blank" class="btn btn-info btn-sm">View</a>
+                            <a href="{{ url_for('download_file', filename=doc.filename) }}" 
+                               class="btn btn-success btn-sm">Download</a>
+                            <form action="{{ url_for('admin_delete_document', filename=doc.filename) }}" method="POST">
+                                <button type="submit" class="btn btn-danger btn-sm" 
+                                        onclick="return confirm('Are you sure you want to delete {{ doc.filename }}?')">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-documents">
+                <p>No documents have been uploaded yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.location.href.includes('view=')) {
+            const viewer = document.querySelector('.document-viewer');
+            if (viewer) {
+                viewer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        const buttons = document.querySelectorAll('.btn-view, .btn-download-sm');
+        buttons.forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.98)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+    });
+</script>
+{% endblock %}

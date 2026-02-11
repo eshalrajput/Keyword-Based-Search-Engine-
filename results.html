@@ -1,0 +1,221 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Search Results - Keyword Search Engine{% endblock %}
+
+{% block content %}
+<style>
+    .results-container {
+        padding: 50px 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .results-heading {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .results-heading h2 {
+        font-size: 34px;
+        color: #022041;
+        font-weight: bold;
+    }
+
+    .results-heading p {
+        font-size: 18px;
+        color: #555;
+        margin-top: 10px;
+    }
+
+    .suggestion {
+        text-align: center;
+        background-color: #d1ecf1;
+        color: #0c5460;
+        padding: 20px;
+        margin: 30px 0;
+        border: 1px solid #bee5eb;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    .suggestion a {
+        color: #0056b3;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    .suggestion a:hover {
+        color: #004085;
+    }
+
+    .result-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .result-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .result-title {
+        color: #0d0668;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        overflow-wrap: break-word;
+    }
+
+    .result-snippet {
+        color: #333;
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+
+    .result-snippet mark {
+        background-color: #fff176;
+        padding: 2px 4px;
+        border-radius: 4px;
+    }
+
+    .result-buttons a {
+        display: inline-block;
+        margin-right: 10px;
+        padding: 10px 16px;
+        font-size: 15px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: 0.3s ease;
+    }
+
+    .btn-view {
+        background-color: #0d6efd;
+        color: #fff;
+    }
+
+    .btn-view:hover {
+        background-color: #0a58ca;
+    }
+
+    .btn-download {
+        background-color: #6f42c1;
+        color: #fff;
+    }
+
+    .btn-download:hover {
+        background-color: #5936a1;
+    }
+
+    .no-results {
+        text-align: center;
+        background-color: #fff3cd;
+        padding: 25px;
+        border-radius: 10px;
+        font-size: 18px;
+        color: #856404;
+        margin-top: 30px;
+    }
+
+    .back-home {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .back-home a {
+        background-color: #6c757d;
+        color: #fff;
+        padding: 12px 25px;
+        font-size: 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-home a:hover {
+        background-color: #5a6268;
+    }
+    .snippet {
+        margin-bottom: 15px;
+        padding: 12px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #0d6efd;
+    }
+    
+    .snippet:last-child {
+        margin-bottom: 0;
+    }
+    
+    .snippets-container {
+        margin-bottom: 20px;
+    }
+    .occurrence-info {
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+</style>
+
+<div class="container results-container">
+    <div class="results-heading">
+        <h2>🔎 Search Results</h2>
+        {% if query %}
+            <p>Showing results for: <strong>"{{ query }}"</strong></p>
+        {% endif %}
+    </div>
+
+    {% if corrected_query and corrected_query != query %}
+        <div class="suggestion">
+            ❓ Did you mean:
+            <a href="{{ url_for('search') }}?q={{ corrected_query }}">{{ corrected_query }}</a>?
+        </div>
+    {% endif %}
+
+    {% if results %}
+        <div class="row">
+            {% for result in results %}
+                <div class="col-md-12">
+                    <div class="result-card">
+                        <div class="result-title">{{ result.filename }}</div>
+
+                        <div class="snippets-container">
+                            {% if result.snippets %}
+                                {% for snippet in result.snippets %}
+                                    <div class="snippet">{{ snippet|safe }}</div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="snippet">No relevant snippets found.</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="occurrence-info">
+                            <strong>Occurrences:</strong> {{ result.occurrence_count }}
+                        </div>
+
+                        <div class="result-buttons">
+                            {% if result.filename != "Error" and result.view_link != "#" %}
+                                <a href="{{ result.view_link }}" class="btn-view" target="_blank">👁️ View Document</a>
+                                <a href="{{ result.download_link }}" class="btn-download">⬇️ Download</a>
+                            {% else %}
+                                <span class="text-muted">No preview available</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-results">
+            ⚠️ No results found for your search.
+        </div>
+    {% endif %}
+
+    <div class="back-home">
+        <a href="{{ url_for('home') }}">⬅ Back to Home</a>
+    </div>
+</div>
+{% endblock %}

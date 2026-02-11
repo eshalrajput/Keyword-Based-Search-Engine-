@@ -1,0 +1,150 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<!-- About Page Container -->
+<div class="about-container">
+
+    <!-- Header Section -->
+    <h1 class="section-title">About Our Search Engine</h1>
+    <p class="section-subtitle">Built for simplicity, speed, and smarter searching.</p>
+
+    <!-- Introduction Section -->
+    <p class="paragraph">
+        The Keyword-Based Search Engine for Text Documents is designed to provide a fast, reliable, and efficient method for retrieving relevant information from a variety of documents. Whether you are a student, researcher, or professional, this tool helps you locate the information you need quickly, so you can focus on what matters most.
+    </p>
+
+    <!-- Key Features Section -->
+    <h2 class="feature-title">Key Features</h2>
+    <hr class="section-divider">
+    <div class="feature-container">
+        <!-- Feature 1: Efficient Document Indexing -->
+        <div class="feature">
+            <i class="fas fa-search"></i>
+            <strong>Efficient Document Indexing:</strong> Fast and accurate search results from indexed documents.
+        </div>
+        <!-- Feature 2: Keyword Search with Spell Checking -->
+        <div class="feature">
+            <i class="fas fa-spell-check"></i>
+            <strong>Keyword Search with Spell Checking:</strong> Real-time spelling suggestions and keyword matching to ensure accurate results.
+        </div>
+        <!-- Feature 3: User-Friendly Interface -->
+        <div class="feature">
+            <i class="fas fa-desktop"></i>
+            <strong>User-Friendly Interface:</strong> Simple, clean design for ease of use across various devices.
+        </div>
+        <!-- Feature 4: Secure Accounts -->
+        <div class="feature">
+            <i class="fas fa-lock"></i>
+            <strong>Secure Accounts:</strong> Safe document upload and management with user authentication.
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <h2 class="feature-title">Our Team</h2>
+    <hr class="section-divider">
+    <p class="paragraph">
+        We are a small team of passionate developers dedicated to improving how information is accessed and managed. Our goal is to build tools that are not only functional but also intuitive and user-friendly. Through this project, we aim to make document searching more efficient, saving users time and effort.
+    </p>
+
+    <!-- Contact Section -->
+    <h2 class="feature-title">Contact Us</h2>
+    <hr class="section-divider">
+    <p class="paragraph">
+        Have questions or suggestions? Feel free to reach out to us at 
+        <a href="mailto:support@example.com" class="email-link">support@example.com</a>. We'd love to hear from you!
+    </p>
+</div>
+
+<!-- About Page Styles -->
+<style>
+    .about-container {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Section Titles */
+    .section-title {
+        font-size: 2rem;
+        color: #03045f;
+        font-weight: bold;
+    }
+
+    /* Section Subtitle */
+    .section-subtitle {
+        font-size: 1.2rem;
+        color: #000205;
+        margin-bottom: 20px;
+    }
+
+    /* Paragraph Styling */
+    .paragraph {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #03095f;
+        margin-bottom: 20px;
+    }
+
+    /* Feature Titles */
+    .feature-title {
+        font-size: 1.8rem;
+        color: #333;
+        font-weight: bold;
+        margin-top: 30px;
+        margin-bottom: 10px;
+    }
+
+    /* Container for Features */
+    .feature-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    /* Individual Feature Styling */
+    .feature {
+        background: hsl(220, 78%, 95%);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgb(0, 12, 78);
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Hover Effect for Feature */
+    .feature:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgb(0, 12, 78);
+    }
+
+    /* Icon Style within Feature */
+    .feature i {
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-right: 10px;
+    }
+
+    /* Text Style within Feature */
+    .feature strong {
+        color: #0b006b;
+    }
+
+    /* Divider between Sections */
+    .section-divider {
+        border: 0;
+        height: 1px;
+        background: #ddd;
+        margin: 20px 0;
+    }
+
+    /* Email Link Styling */
+    .email-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .email-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

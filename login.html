@@ -1,0 +1,170 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Login - Keyword Search Engine{% endblock %}
+
+{% block content %}
+<style>
+/* General Styling for the body */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+}
+
+/* Styling for the Login Container */
+.login-container {
+    max-width: 350px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Login Heading */
+h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #2c3e50;
+}
+
+/* Styling for input groups */
+.input-group {
+    margin-bottom: 14px;
+    text-align: left;
+}
+
+/* Label for the input fields */
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Styling for input fields */
+input {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Styling for the password input container */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper span {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    font-size: 18px;
+}
+
+/* Login Button Styling */
+.login-btn {
+    background: #010d52;
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+/* Hover effect for the login button */
+.login-btn:hover {
+    background: #0056b3;
+}
+
+/* Signup Link Styling */
+.signup-link {
+    margin-top: 10px;
+}
+
+.signup-link a {
+    color: #e74c3c;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Hover effect on the signup link */
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+/* Flash Message Styling */
+.flash-message {
+    color: red;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+</style>
+
+<!-- Login Page Content -->
+<div class="login-container">
+    <h2>Login to Your Account</h2>
+
+    <!-- Flash messages for login errors or status -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-message">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Login Form -->
+    <form action="{{ url_for('login') }}" method="POST">
+        <!-- Email Input Group -->
+        <div class="input-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <!-- Password Input Group with toggle functionality -->
+        <div class="input-group">
+            <label for="password">Password:</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" required>
+                <span onclick="togglePassword()">Show</span>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="login-btn">Login</button>
+    </form>
+
+    <!-- Signup Link -->
+    <p class="signup-link">
+        Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a>
+    </p>
+</div>
+
+<!-- Script for toggling password visibility -->
+<script>
+    function togglePassword() {
+        const input = document.getElementById("password");
+        const icon = event.target;
+        // Toggle the password visibility and icon text
+        if (input.type === "password") {
+            input.type = "text";
+            icon.textContent = "Hide";
+        } else {
+            input.type = "password";
+            icon.textContent = "Show";
+        }
+    }
+</script>
+
+{% endblock %}
